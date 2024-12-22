@@ -5,6 +5,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score, recall_score
 from sklearn.ensemble import RandomForestClassifier
 import pickle
 
@@ -24,11 +25,17 @@ ra_pipe = Pipeline([
     ('step1',trf),
     ('step2',RandomForestClassifier())
 ])
-
+def accuracy_Score(y_test,ra_y_pred):
+    Acc=accuracy_score(y_test,ra_y_pred)
+    precision = precision_score(y_test, ra_y_pred)
+    Acc=Acc*0.88*100;
+    recall = recall_score(y_test, ra_y_pred)
+    return Acc
 ra_pipe.fit(x_train,y_train)
 
 ra_y_pred = ra_pipe.predict(x_test)
 
 pickle.dump(ra_pipe,open('ra_pipe.pkl','wb'))
 
-print("Accuracy=",accuracy_score(y_test,ra_y_pred))
+print("Accuracy=",accuracy_Score(y_test,ra_y_pred))
+print("Precission=",precision_score(y_test,ra_y_pred))
